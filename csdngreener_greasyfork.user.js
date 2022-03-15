@@ -302,138 +302,139 @@ var protect_svg = '<svg t="1629560538805" class="icon" viewBox="0 0 1024 1024" v
 
 // jquery.showtips.js
 (function(jQuery) {
-	jQuery.fn.showTips = function(options,elem){
-		var config = {
-			skin:"trips",
-			content:$(this).attr("tips")||"弹出类型的气泡提示！",  //气泡提示内容里面可以是HTML，默认显示自定义的提示内容
-			width:"auto",  //默认为auto，可以写具体尺寸如：200
-			alignTo:["right","center"],  //箭头方向
-			color:["rgb(247, 206, 57)","#FFFEF4"],  //这里是提示层的风格，第一个参数为提示边框颜色，第二个参数为提示背景颜色
-			type:"html",   //显示内容类型
-			trigger:"click",    //默认为点击显示，show为初始化就显示，hover为经过显示，focus焦点显示，mouse跟随鼠标显示隐藏
-			spacing:10,  //默认为箭头距离对象的尺寸
-			customid:"",  //自定义ID
-			isclose:false,   //是否显示关闭按钮
-			success : null    //成功后的回调函数
-		};
-		var opts = jQuery.extend(config, options);
-		return this.each(function(){
-			var that = jQuery(this),tipBox,tipId,selfH,selfW,conId,docW, spa = opts.spacing, skin=opts.skin;
-			var Mathrandom = Math.floor(Math.random() * 9999999);
+    jQuery.fn.showTips = function(options,elem){
+        var config = {
+            skin:"trips",
+            content:$(this).attr("tips")||"弹出类型的气泡提示！",  //气泡提示内容里面可以是HTML，默认显示自定义的提示内容
+            width:"auto",  //默认为auto，可以写具体尺寸如：200
+            alignTo:["right","center"],  //箭头方向
+            color:["rgb(247, 206, 57)","#FFFEF4"],  //这里是提示层的风格，第一个参数为提示边框颜色，第二个参数为提示背景颜色
+            type:"html",   //显示内容类型
+            trigger:"click",    //默认为点击显示，show为初始化就显示，hover为经过显示，focus焦点显示，mouse跟随鼠标显示隐藏
+            spacing:10,  //默认为箭头距离对象的尺寸
+            customid:"",  //自定义ID
+            isclose:false,   //是否显示关闭按钮
+            success : null    //成功后的回调函数
+        };
+        var opts = jQuery.extend(config, options);
+        return this.each(function(){
+            var that = jQuery(this),tipBox,tipId,selfH,selfW,conId,docW, spa = opts.spacing, skin=opts.skin;
+            var Mathrandom = Math.floor(Math.random() * 9999999);
             var pmr = (opts.customid=="") ? Mathrandom :opts.customid.replace(/[#.]/, "");
-			var pointer=opts.alignTo.length===1 ? ''+opts.alignTo[0]+'' : ''+opts.alignTo[0]+'-'+opts.alignTo[1]+'';
+            var pointer=opts.alignTo.length===1 ? ''+opts.alignTo[0]+'' : ''+opts.alignTo[0]+'-'+opts.alignTo[1]+'';
 
-			if(typeof elem == 'string') {
-				if(elem =="show"){
-					jQuery('#tip'+pmr).show();  jQuery("#con"+pmr).html(opts.content);
-					showPosition(pointer,jQuery('#tip'+pmr));
-					};
-				if(elem =="hide"){jQuery('#tip'+pmr).hide()};
-			};
-			if(typeof elem == '' || typeof elem == undefined){return true};
-			if(jQuery('#tip'+pmr).length==1){return false;}
-			tipBox=jQuery('<div class="'+skin+' '+skin+'-'+pointer+'" id="tip'+pmr+'"><i></i><em></em><div class="'+skin+'con" id="con'+pmr+'"></div></div>').appendTo(document.body);
-			tipId = jQuery("#tip"+pmr);
-			conId = jQuery("#con"+pmr);
+            if(typeof elem == 'string') {
+                if(elem =="show"){
+                    jQuery('#tip'+pmr).show();  jQuery("#con"+pmr).html(opts.content);
+                    showPosition(pointer,jQuery('#tip'+pmr));
+                };
+                if(elem =="hide"){jQuery('#tip'+pmr).hide()};
+            };
+            if(typeof elem == '' || typeof elem == undefined){return true};
+            if(jQuery('#tip'+pmr).length==1){return false;}
+            tipBox=jQuery('<div class="'+skin+' '+skin+'-'+pointer+'" id="tip'+pmr+'"><i></i><em></em><div class="'+skin+'con" id="con'+pmr+'"></div></div>').appendTo(document.body);
+            tipId = jQuery("#tip"+pmr);
+            conId = jQuery("#con"+pmr);
 
-			var edgecolor='border-'+opts.alignTo[0]+'-color', tfi=tipId.find("i"), tfem=tipId.find("em"), tfiem=tipId.find("i,em");
-			tipId.css({'position':'absolute',border:'1px solid','border-color':opts.color[0],'background-color':opts.color[1]});
-			if(opts.alignTo[1]=='center'){ var offpos=50,percen="%"; }else{ var offpos=5,percen="px"; };
-			tfiem.css({width:0,height:0,content:'','position':'absolute'})
-			tfi.css({border:'8px solid transparent','z-index':5});
-			tfem.css({border:'7px solid transparent','z-index':10});
-			switch (pointer) {
-				case 'top-center':
-				case 'bottom-center':
-				case 'top-left':
-				case 'bottom-left':
-					var poi="left";
-					if(pointer=='top-center' || pointer=='bottom-center'){
-						tfi.css({"margin-left":"-8px"});
-						tfem.css({"margin-left":"-7px"});
-					}
-				    break;
-				case 'left-center':
-				case 'right-center':
-				case 'left-top':
-				case 'right-top':
-					var poi="top";
-					if(pointer=='left-center' || pointer=='right-center'){
-						tfi.css({"margin-top":"-8px"});
-						tfem.css({"margin-top":"-7px"});
-					}
-				    break;
-				default:
-					var poi="right";
-				    break;
-			};
+            var edgecolor='border-'+opts.alignTo[0]+'-color', tfi=tipId.find("i"), tfem=tipId.find("em"), tfiem=tipId.find("i,em");
+            tipId.css({'position':'absolute',border:'1px solid','border-color':opts.color[0],'background-color':opts.color[1]});
+            if(opts.alignTo[1]=='center'){ var offpos=50,percen="%"; }else{ var offpos=5,percen="px"; };
+            tfiem.css({width:0,height:0,content:'','position':'absolute'})
+            tfi.css({border:'8px solid transparent','z-index':5});
+            tfem.css({border:'7px solid transparent','z-index':10});
+            switch (pointer) {
+                case 'top-center':
+                case 'bottom-center':
+                case 'top-left':
+                case 'bottom-left':
+                    var poi="left";
+                    if(pointer=='top-center' || pointer=='bottom-center'){
+                        tfi.css({"margin-left":"-8px"});
+                        tfem.css({"margin-left":"-7px"});
+                    }
+                    break;
+                case 'left-center':
+                case 'right-center':
+                case 'left-top':
+                case 'right-top':
+                    var poi="top";
+                    if(pointer=='left-center' || pointer=='right-center'){
+                        tfi.css({"margin-top":"-8px"});
+                        tfem.css({"margin-top":"-7px"});
+                    }
+                    break;
+                default:
+                    var poi="right";
+                    break;
+            };
 
-			if(pointer=='follow'){
-				tfi.css({'border-bottom-color':opts.color[0],left:''+offpos+percen+'',bottom:'100%'});
-				tfem.css({'border-bottom-color':opts.color[1],left:''+(offpos+(opts.alignTo[1]=='center'?0:1))+percen+'',bottom:'100%'});
-			}else{
-				tfi.css(edgecolor,opts.color[0]).css(poi,''+offpos+percen+'');
-				tfem.css(edgecolor,opts.color[1]).css(poi,''+(offpos+(opts.alignTo[1]=='center'?0:1))+percen+'');
-				tfiem.css(opts.alignTo[0],'100%');
-			};
+            if(pointer=='follow'){
+                tfi.css({'border-bottom-color':opts.color[0],left:''+offpos+percen+'',bottom:'100%'});
+                tfem.css({'border-bottom-color':opts.color[1],left:''+(offpos+(opts.alignTo[1]=='center'?0:1))+percen+'',bottom:'100%'});
+            }else{
+                tfi.css(edgecolor,opts.color[0]).css(poi,''+offpos+percen+'');
+                tfem.css(edgecolor,opts.color[1]).css(poi,''+(offpos+(opts.alignTo[1]=='center'?0:1))+percen+'');
+                tfiem.css(opts.alignTo[0],'100%');
+            };
 
-			switch (opts.type) {
-				case 'html':conId.html(opts.content); break;
-				case 'id'  :
-				    var tempid=jQuery(opts.content) ,wrap = document.createElement("div");
-					if(tempid.css("display") == "none"){  tempid.css({display:"block"}); }
-					conId.append(tempid);
-				    break;
-			};
-			if(opts.isclose){
-				jQuery('<span class="'+skin+'close" id="close'+pmr+'">&times;</span>').appendTo(tipId);
-				tipId.find("#close"+pmr+"").on("click",function(){tipId.hide();});
-			}
+            switch (opts.type) {
+                case 'html':conId.html(opts.content); break;
+                case 'id'  :
+                    var tempid=jQuery(opts.content) ,wrap = document.createElement("div");
+                    if(tempid.css("display") == "none"){  tempid.css({display:"block"}); }
+                    conId.append(tempid);
+                    break;
+            };
+            if(opts.isclose){
+                jQuery('<span class="'+skin+'close" id="close'+pmr+'">&times;</span>').appendTo(tipId);
+                tipId.find("#close"+pmr+"").on("click",function(){tipId.hide();});
+            }
 
-			if(typeof opts.width === 'string'){
-				docW = parseInt(document.body.clientWidth*(opts.width.replace('%','')/100));
-				(typeof opts.width == 'auto' || typeof opts.width == '') ? tipBox.css({width:'auto'}) : tipBox.css({width:docW});
-				tipBox.height();
-			}else{
-				tipBox.width(opts.width).height();
-			}
+            if(typeof opts.width === 'string'){
+                docW = parseInt(document.body.clientWidth*(opts.width.replace('%','')/100));
+                (typeof opts.width == 'auto' || typeof opts.width == '') ? tipBox.css({width:'auto'}) : tipBox.css({width:docW});
+                tipBox.height();
+            }else{
+                tipBox.width(opts.width).height();
+            }
             function showPosition(pointer,cell){
-				var selfH = that.outerHeight(true), selfW = that.outerWidth(true);
-				var post=that.offset().top, posl=that.offset().left;
-				var tipCell=(cell=="" || cell==undefined) ? tipId : cell;
-			    var tipH=tipCell.outerHeight(true), tipW=tipCell.outerWidth(true);
+                var selfH = that.outerHeight(true), selfW = that.outerWidth(true);
+                var post=that.offset().top, posl=that.offset().left;
+                var tipCell=(cell=="" || cell==undefined) ? tipId : cell;
+                var tipH=tipCell.outerHeight(true), tipW=tipCell.outerWidth(true);
 
-				switch (pointer) {
-					case 'top-left': tipCell.css({top:post-tipH-spa,left:posl}); break;
-					case 'top-center': tipCell.css({top:post-tipH-spa,left:posl-(tipW/2)+(selfW/2)}); break;
-					case 'top-right': tipCell.css({top:post-tipH-spa,left:posl-(tipW-selfW)}); break;
-					case 'bottom-left': tipCell.css({top:post+selfH+spa,left:posl}); break;
-					case 'bottom-center': tipCell.css({top:post+selfH+spa,left:posl-(tipW/2)+(selfW/2)}); break;
-					case 'bottom-right': tipCell.css({top:post+selfH+spa,left:posl-(tipW-selfW)}); break;
-					case 'left-top': tipCell.css({top:post,left:posl-tipW-spa}); break;
-					case 'left-center': tipCell.css({top:post-(tipH/2)+(selfH/2),left:posl-tipW-spa}); break;
-					case 'right-top': tipCell.css({top:post,left:posl+selfW+spa}); break;
-					case 'right-center': tipCell.css({top:post-(tipH/2)+(selfH/2),left:posl+selfW+spa}); break;
-					case 'follow': that.mousemove(function(e) { tipCell.css({top:e.pageY + 30,left:e.pageX - 6}); }); break;
-				};
-			}
-			tipBox.hide();
-			switch (opts.trigger){
-				case 'show':showPosition(pointer);tipBox.show();break;
+                switch (pointer) {
+                    case 'top-left': tipCell.css({top:post-tipH-spa,left:posl}); break;
+                    case 'top-center': tipCell.css({top:post-tipH-spa,left:posl-(tipW/2)+(selfW/2)}); break;
+                    case 'top-right': tipCell.css({top:post-tipH-spa,left:posl-(tipW-selfW)}); break;
+                    case 'bottom-left': tipCell.css({top:post+selfH+spa,left:posl}); break;
+                    case 'bottom-center': tipCell.css({top:post+selfH+spa,left:posl-(tipW/2)+(selfW/2)}); break;
+                    case 'bottom-right': tipCell.css({top:post+selfH+spa,left:posl-(tipW-selfW)}); break;
+                    case 'left-top': tipCell.css({top:post,left:posl-tipW-spa}); break;
+                    case 'left-center': tipCell.css({top:post-(tipH/2)+(selfH/2),left:posl-tipW-spa}); break;
+                    case 'right-top': tipCell.css({top:post,left:posl+selfW+spa}); break;
+                    case 'right-center': tipCell.css({top:post-(tipH/2)+(selfH/2),left:posl+selfW+spa}); break;
+                    case 'follow': that.mousemove(function(e) { tipCell.css({top:e.pageY + 30,left:e.pageX - 6}); }); break;
+                };
+            }
+            tipBox.hide();
+            switch (opts.trigger){
+                case 'show':showPosition(pointer);tipBox.show();break;
                 case 'click':that.click(function(){showPosition(pointer);tipBox.show();});break;
-				case 'hover':that.hover(function(){showPosition(pointer);tipBox.show(); tipBox.on("mouseover",function(){jQuery(this).show()}).on("mouseout",function(){jQuery(this).hide()})},function(){tipBox.hide();});break;
-				case 'focus':that.focus(function(){showPosition(pointer);tipBox.show();});  that.blur(function(){tipBox.hide();});break;
-				case 'mouse':that.hover(function(){showPosition(pointer);tipBox.show();},function(){tipBox.hide();});break;
-			};
-			setTimeout(function(){opts.success && opts.success();}, 1);
-		});
-	}
+                case 'hover':that.hover(function(){showPosition(pointer);tipBox.show(); tipBox.on("mouseover",function(){jQuery(this).show()}).on("mouseout",function(){jQuery(this).hide()})},function(){tipBox.hide();});break;
+                case 'focus':that.focus(function(){showPosition(pointer);tipBox.show();});  that.blur(function(){tipBox.hide();});break;
+                case 'mouse':that.hover(function(){showPosition(pointer);tipBox.show();},function(){tipBox.hide();});break;
+            };
+            setTimeout(function(){opts.success && opts.success();}, 1);
+        });
+    }
 })(jQuery);
 
 (function () {
     'use strict';
 
     l("CSDNGreener V" + version);
+    removeMask()
     if (isFirefox()) {
         console.log("您正在使用火狐浏览器，将使用兼容模式运行 CSDNGreener。");
     }
@@ -637,8 +638,8 @@ var protect_svg = '<svg t="1629560538805" class="icon" viewBox="0 0 1024 1024" v
             put(".option-box[data-type='guide'],.option-box[data-type='cs'],.option-box[data-type='report'],.csdn-common-logo-advert");
             clean(10);
             setTimeout(function() {
-               // 展开评论的所有回复
-               $('.btn-read-reply').click();
+                // 展开评论的所有回复
+                $('.btn-read-reply').click();
             }, 1500);
             // 主动加入右侧栏
             if ($(".recommend-right").length === 0) {
@@ -1158,7 +1159,7 @@ function common(num, times) {
             // 推荐内容
             $(".blog-content-box").append("<br><div class='blog-content-box' id='recommendSwitch' style='text-align: right;'></div>");
             $("#recommendSwitch:last").append('<input type="checkbox" id="toggle-button"> <label for="toggle-button" class="button-label"> <span class="circle"></span> <span class="text on">&nbsp;</span> <span class="text off">&nbsp;</span> </label>' +
-                               '<p style="margin-top: 5px; font-size: 13px;">显示推荐内容</p>');
+                '<p style="margin-top: 5px; font-size: 13px;">显示推荐内容</p>');
             let recommendCookie = config.get("recommend", false);
             if (!recommendCookie) {
                 $(".recommend-box").hide();
@@ -1171,11 +1172,11 @@ function common(num, times) {
                 $("#toggle-button").prop("checked", false);
             }
             config.listenButton("#toggle-recommend-button", "recommend",
-                               function() {$(".recommend-box").slideDown(200);},
-                               function() {$(".recommend-box").slideUp(200);});
+                function() {$(".recommend-box").slideDown(200);},
+                function() {$(".recommend-box").slideUp(200);});
             config.listenButtonAndAction("#toggle-button", "recommend",
-                                function() {$(".recommend-box").slideDown(200);},
-                               function() {$(".recommend-box").slideUp(200);});
+                function() {$(".recommend-box").slideDown(200);},
+                function() {$(".recommend-box").slideUp(200);});
 
             // 显示小店
             let shopCookie = config.get('shop',false);
@@ -1189,8 +1190,8 @@ function common(num, times) {
                 $("#toggle-shop-button").prop("checked", false);
             }
             config.listenButton("#toggle-shop-button", "shop",
-                                function() {location.reload();},
-                                function() {location.reload();});
+                function() {location.reload();},
+                function() {location.reload();});
 
             // 显示作者名片
             let authorCardCookie = config.get("authorCard", true);
@@ -1207,8 +1208,8 @@ function common(num, times) {
                 $("#toggle-authorcard-button").prop("checked", false);
             }
             config.listenButton("#toggle-authorcard-button", "authorCard",
-                               function() {location.reload();},
-                               function() {location.reload();});
+                function() {location.reload();},
+                function() {location.reload();});
 
             // 强制白色主题
             let whiteThemeCookie = config.get("whiteTheme", false);
@@ -1226,8 +1227,8 @@ function common(num, times) {
                 $("#toggle-whitetheme-button").prop("checked", false);
             }
             config.listenButton("#toggle-whitetheme-button", "whiteTheme",
-                               function() {location.reload();},
-                               function() {location.reload();});
+                function() {location.reload();},
+                function() {location.reload();});
 
             // 背景图
             let backgroundImage = GM_getValue("backgroundImage", "");
@@ -1259,7 +1260,7 @@ function common(num, times) {
                 setTimeout(function() {
                     $('#asideSearchArticle').attr("style", "margin-top: 8px; width: 300px;");
                     var i = $("#search-blog-words")
-                      , n = $(".btn-search-blog");
+                        , n = $(".btn-search-blog");
                     i.keyup(function(t) {
                         var n = t.keyCode;
                         if (13 == n) {
@@ -1286,8 +1287,8 @@ function common(num, times) {
                 $("#toggle-searchblog-button").prop("checked", false);
             }
             config.listenButton("#toggle-searchblog-button", "searchBlog",
-                               function() {location.reload();},
-                               function() {location.reload();});
+                function() {location.reload();},
+                function() {location.reload();});
 
             // 最新文章
             let newArticleCookie = config.get("newArticle", false);
@@ -1303,8 +1304,8 @@ function common(num, times) {
                 $("#toggle-newarticle-button").prop("checked", false);
             }
             config.listenButton("#toggle-newarticle-button", "newArticle",
-                               function() {location.reload();},
-                               function() {location.reload();});
+                function() {location.reload();},
+                function() {location.reload();});
 
             // 热门文章
             let hotArticleCookie = config.get("hotArticle", false);
@@ -1321,8 +1322,8 @@ function common(num, times) {
                 $("#toggle-hotarticle-button").prop("checked", false);
             }
             config.listenButton("#toggle-hotarticle-button", "hotArticle",
-                               function() {location.reload();},
-                               function() {location.reload();});
+                function() {location.reload();},
+                function() {location.reload();});
 
             // 最新评论
             let newCommentsCookie = config.get("newComments", false);
@@ -1340,8 +1341,8 @@ function common(num, times) {
                 $("#toggle-newcomments-button").prop("checked", false);
             }
             config.listenButton("#toggle-newcomments-button", "newComments",
-                               function() {location.reload();},
-                               function() {location.reload();});
+                function() {location.reload();},
+                function() {location.reload();});
 
             // 分类专栏
             let kindPersonCookie = config.get("kindPerson", false);
@@ -1371,8 +1372,8 @@ function common(num, times) {
                 $("#toggle-kindperson-button").prop("checked", false);
             }
             config.listenButton("#toggle-kindperson-button", "kindPerson",
-                               function() {location.reload();},
-                               function() {location.reload();});
+                function() {location.reload();},
+                function() {location.reload();});
 
             // 目录
             let contentCookie = config.get("content", true);
@@ -1387,8 +1388,8 @@ function common(num, times) {
                 $("#toggle-content-button").prop("checked", false);
             }
             config.listenButton("#toggle-content-button", "content",
-                               function() {location.reload();},
-                               function() {location.reload();});
+                function() {location.reload();},
+                function() {location.reload();});
 
             // 推荐文章
             let recommendArticleCookie = config.get("recommendArticle", false);
@@ -1407,8 +1408,8 @@ function common(num, times) {
                 $("#toggle-recommendarticle-button").prop("checked", false);
             }
             config.listenButton("#toggle-recommendarticle-button", "recommendArticle",
-                               function() {location.reload();},
-                               function() {location.reload();});
+                function() {location.reload();},
+                function() {location.reload();});
 
             // 归档
             let archiveCookie = config.get("archive", false);
@@ -1428,8 +1429,8 @@ function common(num, times) {
                 $("#toggle-archive-button").prop("checked", false);
             }
             config.listenButton("#toggle-archive-button", "archive",
-                               function() {location.reload();},
-                               function() {location.reload();});
+                function() {location.reload();},
+                function() {location.reload();});
 
             // 自动靠左平铺
             let autoSizeCookie = config.get("autoSize", false);
@@ -1467,22 +1468,22 @@ function common(num, times) {
                 $("#toggle-autosize-button").prop("checked", false);
             }
             config.listenButton("#toggle-autosize-button", "autoSize",
-                               function() {location.reload();},
-                               function() {location.reload();});
+                function() {location.reload();},
+                function() {location.reload();});
 
             // 自动隐藏顶栏
             let autoHideToolbarCookie = config.get("autoHideToolbar", true);
             if (autoHideToolbarCookie) {
                 $(window).scroll(function() {
                     if (document.documentElement.scrollTop > 100) {
-                	    let scrollS = $(this).scrollTop();
-                	    if (scrollS >= windowTop) {
-                	    	$('#csdn-toolbar').slideUp(100);
-                	    	windowTop = scrollS;
-                	    } else {
-                	    	$('#csdn-toolbar').slideDown(100);
-                	    	windowTop = scrollS;
-                	    }
+                        let scrollS = $(this).scrollTop();
+                        if (scrollS >= windowTop) {
+                            $('#csdn-toolbar').slideUp(100);
+                            windowTop = scrollS;
+                        } else {
+                            $('#csdn-toolbar').slideDown(100);
+                            windowTop = scrollS;
+                        }
                     }
                 });
             }
@@ -1492,25 +1493,25 @@ function common(num, times) {
                 $("#toggle-autohidetoolbar-button").prop("checked", false);
             }
             config.listenButton("#toggle-autohidetoolbar-button", "autoHideToolbar",
-                               function() {location.reload();},
-                               function() {location.reload();});
+                function() {location.reload();},
+                function() {location.reload();});
 
             // 自动隐藏底栏
             let autoHideBottomBarCookie = config.get("autoHideBottomBar", true);
             if (autoHideBottomBarCookie) {
                 $("#toolBarBox .left-toolbox").css({
-                	position: "relative",
-                	left: "0px",
-                	bottom: "0",
-                	width: $("#toolBarBox").width() + "px"
+                    position: "relative",
+                    left: "0px",
+                    bottom: "0",
+                    width: $("#toolBarBox").width() + "px"
                 });
                 $(window).scroll(function() {
-                	$("#toolBarBox .left-toolbox").css({
-                		position: "relative",
-                		left: "0px",
-                		bottom: "0",
-                		width: $("#toolBarBox").width() + "px"
-                	})
+                    $("#toolBarBox .left-toolbox").css({
+                        position: "relative",
+                        left: "0px",
+                        bottom: "0",
+                        width: $("#toolBarBox").width() + "px"
+                    })
                 });
             }
             if (autoHideBottomBarCookie) {
@@ -1519,8 +1520,8 @@ function common(num, times) {
                 $("#toggle-autohidebottombar-button").prop("checked", false);
             }
             config.listenButton("#toggle-autohidebottombar-button", "autoHideBottomBar",
-                               function() {location.reload();},
-                               function() {location.reload();});
+                function() {location.reload();},
+                function() {location.reload();});
 
             // 创作中心按钮
             let writeBlogCookie = config.get("writeBlog", true);
@@ -1533,8 +1534,8 @@ function common(num, times) {
                 $("#toggle-writeblog-button").prop("checked", false);
             }
             config.listenButton("#toggle-writeblog-button", "writeBlog",
-                               function() {location.reload();},
-                               function() {location.reload();});
+                function() {location.reload();},
+                function() {location.reload();});
 
             // 右侧滚动条
             /** setTimeout(function () {
@@ -1615,15 +1616,15 @@ function common(num, times) {
 }
 
 function showTips() {
-	var config = {
-		content: "欢迎使用 CSDNGreener，绿化设定按钮在这里！<br><a onclick='javascript:$(\".trips\").remove();'>好的，以后不再提示我</a>",
-		type: "html",
-		alignTo: ["bottom", "right"],
-		trigger: "show",
-		isclose: false,
-		color: ["#B2E281", "#B2E281"]
-	};
-	$("#greenerSettings").showTips(config);
+    var config = {
+        content: "欢迎使用 CSDNGreener，绿化设定按钮在这里！<br><a onclick='javascript:$(\".trips\").remove();'>好的，以后不再提示我</a>",
+        type: "html",
+        alignTo: ["bottom", "right"],
+        trigger: "show",
+        isclose: false,
+        color: ["#B2E281", "#B2E281"]
+    };
+    $("#greenerSettings").showTips(config);
 }
 
 function getHeight(element) {
@@ -1636,4 +1637,14 @@ function getHeight(element) {
 
 function isFirefox() {
     return navigator.userAgent.indexOf("Firefox") > 0;
+}
+
+// 关闭防复制限制
+function removeMask(){
+    console.log("test")
+    for (let v of document.getElementsByTagName("style")) {
+        if(v.innerText&&v.innerText.indexOf("pre")>-1){
+            document.getElementsByTagName("head")[0].removeChild(v)
+        }
+    }
 }
